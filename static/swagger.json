@@ -1,0 +1,320 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Simple Banking System API",
+    "description": "API for managing a simple banking system",
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
+    }
+  },
+  "paths": {
+    "/create_account": {
+      "post": {
+        "summary": "Create a new account",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "username",
+                "password"
+              ],
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "initial_balance": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "currency": {
+                  "type": "string",
+                  "default": "USD"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Account created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "account_id": {
+                  "type": "integer"
+                },
+                "balance": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "currency": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Authenticate user and get JWT token",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "username",
+                "password"
+              ],
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "access_token": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad username or password"
+          }
+        }
+      }
+    },
+    "/deposit": {
+      "post": {
+        "summary": "Deposit money into an account",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "amount"
+              ],
+              "properties": {
+                "amount": {
+                  "type": "number",
+                  "format": "float"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deposit successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "account_id": {
+                  "type": "integer"
+                },
+                "balance": {
+                  "type": "number",
+                  "format": "float"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Account not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/withdraw": {
+      "post": {
+        "summary": "Withdraw money from an account",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "amount"
+              ],
+              "properties": {
+                "amount": {
+                  "type": "number",
+                  "format": "float"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Withdrawal successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "account_id": {
+                  "type": "integer"
+                },
+                "balance": {
+                  "type": "number",
+                  "format": "float"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Account not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/transfer": {
+      "post": {
+        "summary": "Transfer money between accounts",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "to_account_id",
+                "amount"
+              ],
+              "properties": {
+                "to_account_id": {
+                  "type": "integer"
+                },
+                "amount": {
+                  "type": "number",
+                  "format": "float"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transfer successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "from_account_id": {
+                  "type": "integer"
+                },
+                "to_account_id": {
+                  "type": "integer"
+                },
+                "from_balance": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "to_balance": {
+                  "type": "number",
+                  "format": "float"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Account not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    }
+  }
+}
