@@ -33,7 +33,7 @@ The Simple Banking System API is a RESTful API built with Flask that allows user
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/Daniil-Pankieiev/Banking-System-API.git
+git clone https://github.com/Daniil-Pankieiev/API-Banking-System.git
 ```
 
 2. Create a virtual environment:
